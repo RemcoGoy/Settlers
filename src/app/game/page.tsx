@@ -2,7 +2,7 @@
 
 import { Client } from 'boardgame.io/react';
 
-export const TicTacToe = {
+export const SettlersGame = {
     setup: () => ({ cells: Array(9).fill(null) }),
 
     moves: {
@@ -12,6 +12,6 @@ export const TicTacToe = {
     },
 };
 
-const App = Client({ game: TicTacToe });
+const App = Client({ game: SettlersGame });
 
 export default App;
