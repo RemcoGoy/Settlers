@@ -1,17 +1,9 @@
 'use client'
 
 import { Client } from 'boardgame.io/react';
+import { SettlersGame } from './game';
+import { SettlersBoard } from '@/components/Board';
 
-export const SettlersGame = {
-    setup: () => ({ cells: Array(9).fill(null) }),
-
-    moves: {
-        clickCell: ({ G, playerID }: { G: any, playerID: any }, id: any) => {
-            G.cells[id] = playerID;
-        },
-    },
-};
-
-const App = Client({ game: SettlersGame });
+const App = Client({ game: SettlersGame, board: SettlersBoard });
 
 export default App;
