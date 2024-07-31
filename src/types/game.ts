@@ -1,5 +1,13 @@
+export enum Resource {
+    wheat = "wheat",
+    ore = "ore",
+    brick = "brick",
+    wood = "wood",
+    wool = "wool",
+}
+
 export type Tile = {
-    type: string
+    type: Resource
 }
 
 export type GameState = {
