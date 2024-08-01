@@ -27,11 +27,12 @@ const Hexagon: React.FC<HexagonProps> = ({ x, y, radius, fill, text }) => (
 
 export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves: any }) {
     const [hexagons, setHexagons] = useState<any[]>([]);
+    const [canvasSize, setCanvasSize] = useState({ width: 1000, height: 1000 })
 
     useEffect(() => {
         const newBoard: HexagonProps[] = [];
 
-        const radius = 70;
+        const radius = 100;
         const hexWidth = Math.sqrt(3) * radius;
         const hexHeight = 2 * radius;
 
@@ -48,8 +49,8 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
             const tile = G.tiles[i];
             const resource = tile.type;
 
-            const x = 500 + coords.q * hexWidth + (coords.r % 2) * hexWidth / 2;
-            const y = 350 + coords.r * hexHeight * 3 / 4;
+            const x = canvasSize.width / 2 + coords.q * hexWidth + (coords.r % 2) * hexWidth / 2;
+            const y = canvasSize.height / 2 + coords.r * hexHeight * 3 / 4;
 
 
 
@@ -72,7 +73,7 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
 
     return (
         <div className="gameContainer">
-            <Stage width={1000} height={700} className="gameBoard">
+            <Stage width={canvasSize.width} height={canvasSize.height} className="gameBoard">
                 <Layer>
                     {hexagons && hexagons.map((hex, index) => <Hexagon key={index} {...hex} />)}
                 </Layer>
