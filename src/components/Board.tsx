@@ -27,7 +27,7 @@ const Hexagon: React.FC<HexagonProps> = ({ x, y, radius, fill, text }) => (
 
 export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves: any }) {
     const [hexagons, setHexagons] = useState<any[]>([]);
-    const [canvasSize, setCanvasSize] = useState({ width: 1000, height: 1000 })
+    const [canvasSize, setCanvasSize] = useState({ width: 1200, height: 1200 })
 
     useEffect(() => {
         const newBoard: HexagonProps[] = [];
