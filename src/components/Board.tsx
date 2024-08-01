@@ -1,6 +1,9 @@
 import { GameState } from "@/types/game";
 import React, { useEffect, useState } from "react";
+import FontFaceObserver from 'fontfaceobserver';
 import { Stage, Layer, RegularPolygon, Text } from 'react-konva';
+
+
 
 interface HexagonProps {
     x: number;
@@ -19,15 +22,21 @@ const Hexagon: React.FC<HexagonProps> = ({ x, y, radius, fill, text }) => (
             radius={radius}
             fill={fill}
             stroke={'black'}
-            strokeWidth={2}
+            strokeWidth={1}
         />
-        {text && <Text x={x} y={y} text={text} fontSize={14} align="center" verticalAlign="middle" />}
+        {text && <Text x={x - 13 * text.length} y={y - 26} text={text} fontFamily="'Ubuntu Mono'" fontSize={54} align="center" verticalAlign="middle" />}
     </>
 );
 
 export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves: any }) {
     const [hexagons, setHexagons] = useState<any[]>([]);
-    const [canvasSize, setCanvasSize] = useState({ width: 1200, height: 1200 })
+    const [canvasSize, setCanvasSize] = useState({ width: 1200, height: 1200 });
+    const [fontLoaded, setFontLoaded] = useState(false);
+
+    useEffect(() => {
+        const font = new FontFaceObserver('Ubuntu Mono');
+        font.load().then(() => setFontLoaded(true));
+    }, []);
 
     useEffect(() => {
         const newBoard: HexagonProps[] = [];
@@ -57,11 +66,11 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
             // Assign colors based on resource type
             let fill = 'grey'; // Default
             if (resource === 'desert') fill = 'tan';
-            else if (resource === 'wood') fill = 'green';
-            else if (resource === 'brick') fill = 'red';
-            else if (resource === 'wool') fill = 'lightgreen';
-            else if (resource === 'wheat') fill = 'yellow';
-            else if (resource === 'ore') fill = 'darkgrey';
+            else if (resource === 'wood') fill = '#f4a259';
+            else if (resource === 'brick') fill = '#bc4b51';
+            else if (resource === 'wool') fill = '#8cb369';
+            else if (resource === 'wheat') fill = '#f4e285';
+            else if (resource === 'ore') fill = '#8da1b9';
 
             const newHex = { x, y, radius, fill, text: tile.number?.toString() }
 
@@ -73,11 +82,13 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
 
     return (
         <div className="gameContainer">
-            <Stage width={canvasSize.width} height={canvasSize.height} className="gameBoard">
-                <Layer>
-                    {hexagons && hexagons.map((hex, index) => <Hexagon key={index} {...hex} />)}
-                </Layer>
-            </Stage>
+            {fontLoaded &&
+                <Stage width={canvasSize.width} height={canvasSize.height} className="gameBoard">
+                    <Layer>
+                        {hexagons && hexagons.map((hex, index) => <Hexagon key={index} {...hex} />)}
+                    </Layer>
+                </Stage>
+            }
         </div>
     );
 };
