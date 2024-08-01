@@ -66,7 +66,7 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
             // Assign colors based on resource type
             let fill = 'grey'; // Default
             if (resource === 'desert') fill = 'tan';
-            else if (resource === 'wood') fill = '#f4a259';
+            else if (resource === 'wood') fill = '#be7c4d';
             else if (resource === 'brick') fill = '#bc4b51';
             else if (resource === 'wool') fill = '#8cb369';
             else if (resource === 'wheat') fill = '#f4e285';
