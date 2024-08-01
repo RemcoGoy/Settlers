@@ -6,8 +6,6 @@ import { HexGrid, Layout, Hexagon, GridGenerator } from "react-hexgrid"
 export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: any, moves: any }) {
     const hexagons = GridGenerator.hexagon(3);
 
-
-
     return (
         <div className="gameContainer">
             <HexGrid width={900} height={900}>

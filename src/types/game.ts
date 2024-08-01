@@ -4,10 +4,12 @@ export enum Resource {
     brick = "brick",
     wood = "wood",
     wool = "wool",
+    desert = "desert"
 }
 
 export type Tile = {
-    type: Resource
+    type: Resource,
+    number: number
 }
 
 export type GameState = {
