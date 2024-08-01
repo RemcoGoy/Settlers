@@ -1,7 +1,6 @@
-import React, { MutableRefObject, useEffect, useRef, useState } from "react";
-import { Stage, Layer, RegularPolygon, Text } from 'react-konva';
 import { GameState } from "@/types/game";
-import Konva from "konva";
+import React, { useEffect, useState } from "react";
+import { Stage, Layer, RegularPolygon, Text } from 'react-konva';
 
 interface HexagonProps {
     x: number;
@@ -26,47 +25,56 @@ const Hexagon: React.FC<HexagonProps> = ({ x, y, radius, fill, text }) => (
     </>
 );
 
-export const SettlersBoard: React.FC = () => {
-    const [hexagons] = useState(() => {
-        const radius = 50;
-        const hexWidth = Math.sqrt(3) * radius; // Width of a hexagon
-        const hexHeight = 2 * radius;         // Height of a hexagon
+export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves: any }) {
+    const [hexagons, setHexagons] = useState<any[]>([]);
+
+    useEffect(() => {
+        const newBoard: HexagonProps[] = [];
+
+        const radius = 70;
+        const hexWidth = Math.sqrt(3) * radius;
+        const hexHeight = 2 * radius;
 
         const boardLayout = [
-            { q: 0, r: -2 }, { q: 1, r: -2 }, { q: -1, r: -2 },
+            { q: -1, r: -2 }, { q: 0, r: -2 }, { q: 1, r: -2 },
             { q: -1, r: -1 }, { q: 0, r: -1 }, { q: 1, r: -1 }, { q: 2, r: -1 },
             { q: -2, r: 0 }, { q: -1, r: 0 }, { q: 0, r: 0 }, { q: 1, r: 0 }, { q: 2, r: 0 },
             { q: -2, r: 1 }, { q: -1, r: 1 }, { q: 0, r: 1 }, { q: 1, r: 1 },
             { q: -1, r: 2 }, { q: 0, r: 2 }, { q: 1, r: 2 }
         ];
 
-        const resources = ['Desert', 'Wood', 'Wood', 'Wood', 'Wood', 'Brick', 'Brick', 'Brick', 'Sheep', 'Sheep', 'Sheep', 'Sheep', 'Wheat', 'Wheat', 'Wheat', 'Wheat', 'Ore', 'Ore', 'Ore']; // Catan resource distribution
+        for (let i = 0; i < G.tiles.length; i++) {
+            const coords = boardLayout[i];
+            const tile = G.tiles[i];
+            const resource = tile.type;
 
-        const shuffledResources = resources.sort(() => Math.random() - 0.5); // Shuffle resources
+            const x = 500 + coords.q * hexWidth + (coords.r % 2) * hexWidth / 2;
+            const y = 350 + coords.r * hexHeight * 3 / 4;
 
-        return boardLayout.map((coords, index) => {
-            const x = 300 + coords.q * hexWidth + (coords.r % 2) * hexWidth / 2; // Offset for even rows
-            const y = 200 + coords.r * hexHeight * 3 / 4; // 3/4 to overlap
-            const resource = shuffledResources[index];
+
 
             // Assign colors based on resource type
             let fill = 'grey'; // Default
-            if (resource === 'Desert') fill = 'tan';
-            else if (resource === 'Wood') fill = 'green';
-            else if (resource === 'Brick') fill = 'red';
-            else if (resource === 'Sheep') fill = 'lightgreen';
-            else if (resource === 'Wheat') fill = 'yellow';
-            else if (resource === 'Ore') fill = 'darkgrey';
+            if (resource === 'desert') fill = 'tan';
+            else if (resource === 'wood') fill = 'green';
+            else if (resource === 'brick') fill = 'red';
+            else if (resource === 'wool') fill = 'lightgreen';
+            else if (resource === 'wheat') fill = 'yellow';
+            else if (resource === 'ore') fill = 'darkgrey';
 
-            return { x, y, radius, fill, text: resource };
-        });
-    });
+            const newHex = { x, y, radius, fill, text: tile.number?.toString() }
+
+            newBoard.push(newHex);
+        }
+
+        setHexagons(newBoard);
+    }, [G.tiles])
 
     return (
         <div className="gameContainer">
             <Stage width={1000} height={700} className="gameBoard">
                 <Layer>
-                    {hexagons.map((hex, index) => <Hexagon key={index} {...hex} />)}
+                    {hexagons && hexagons.map((hex, index) => <Hexagon key={index} {...hex} />)}
                 </Layer>
             </Stage>
         </div>
