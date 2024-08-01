@@ -1,4 +1,5 @@
-import { Resource, Tile } from "@/types/game";
+import { Direction, GameState, Resource, Tile } from "@/types/game";
+import { PlaceInitialSettlement, PlaceRoad, PlaceSettlement } from "./moves";
 
 const values = Object.keys(Resource);
 
@@ -57,7 +58,15 @@ function generateBoard() {
 
             tile_data = {
                 type: resource as Resource,
-                number: value
+                number: value,
+                settleSpots: {
+                   [Direction.N]: null,
+                   [Direction.S]: null,
+                   [Direction.NE]: null,
+                   [Direction.SE]: null,
+                   [Direction.NW]: null,
+                   [Direction.SW]: null,
+                }
             }
         } else {
             tile_data = { type: 'desert' } as Tile;
@@ -72,9 +81,20 @@ function generateBoard() {
 export const SettlersGame = {
     setup: () => ({ tiles: generateBoard() }),
 
-    moves: {
-        // clickCell: ({ G, playerID }: { G: GameState, playerID: any }, id: any) => {
-        //     G.tiles[id] = playerID;
-        // },
-    },
+    phases: {
+        settle: {
+            moves: {
+                PlaceInitialSettlement
+            },
+            start: true,
+            next: 'play'
+        },
+
+        play: {
+            moves: {
+                PlaceSettlement,
+                PlaceRoad
+            },
+        }
+    }
 };
