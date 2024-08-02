@@ -81,11 +81,11 @@ function generateBoard() {
 function generateSettleSpots() {
     return [
         {
-            coords: [[-1,-2],[0,-2],[0,-1]],
+            coords: [[-1,-2],[0,-2],[-0.5,-1]],
             playerId: null
         },
         {
-            coords: [[0,-2], [0,-1], [1,-1]],
+            coords: [[0,-2], [-0.5,-1], [0.5,-1]],
             playerId: null
         }
     ]
