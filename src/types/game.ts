@@ -10,7 +10,8 @@ export enum Resource {
 export type Tile = {
     type: Resource,
     number: number,
-    hasRobber: boolean
+    hasRobber: boolean,
+    coords: number[]
 }
 
 export type SettleSpot = {

@@ -65,10 +65,11 @@ function generateBoard() {
             tile_data = {
                 type: resource as Resource,
                 number: value,
-                hasRobber: false
+                hasRobber: false,
+                coords: Object.values(boardLayout[i])
             }
         } else {
-            tile_data = { type: 'desert', hasRobber: true } as Tile;
+            tile_data = { type: 'desert', hasRobber: true, coords: Object.values(boardLayout[i]) } as Tile;
         }
 
         map.push(tile_data ?? {} as Tile);
