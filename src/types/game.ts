@@ -15,7 +15,8 @@ export type Tile = {
 }
 
 export type SettleSpot = {
-    coords: number[][]
+    coords: number[][],
+    playerId: number | null
 }
 
 export type GameState = {

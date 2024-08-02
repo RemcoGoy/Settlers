@@ -60,8 +60,8 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
     const HEX_WIDTH = Math.sqrt(3) * RADIUS;
     const HEX_HEIGHT = 2 * RADIUS;
 
-    function getHexX(q: number, r: number) {
-        return canvasSize.width / 2 + q * HEX_WIDTH + (r % 2) * HEX_WIDTH / 2;
+    function getHexX(q: number) {
+        return canvasSize.width / 2 + q * HEX_WIDTH;
     }
 
     function getHexY(r: number) {
@@ -83,7 +83,7 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
             const tile = G.tiles[i];
             const resource = tile.type;
 
-            const x = getHexX(coords.q, coords.r);
+            const x = getHexX(coords.q);
             const y = getHexY(coords.r);
 
             // Assign colors based on resource type
@@ -113,13 +113,13 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
             const newSettle = { x: -1, y: -1 }
 
             if (coords[0][1] === coords[1][1]) {
-                const x = getHexX((coords[1][0] + coords[0][0]) / 2, coords[0][1]);
+                const x = getHexX((coords[1][0] + coords[0][0]) / 2);
                 const y = getHexY(coords[2][1]);
 
                 newSettle['x'] = x;
                 newSettle['y'] = y - RADIUS;
             } else {
-                const x = getHexX(coords[0][0], coords[0][1]);
+                const x = getHexX(coords[0][0]);
                 const y = getHexY(coords[1][1]);
 
                 newSettle['x'] = x;

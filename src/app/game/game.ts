@@ -3,9 +3,9 @@ import { PlaceRoad, PlaceRobber, PlaceSettlement } from "./moves";
 
 export const boardLayout = [
     { q: -1, r: -2 }, { q: 0, r: -2 }, { q: 1, r: -2 },
-    { q: -1, r: -1 }, { q: 0, r: -1 }, { q: 1, r: -1 }, { q: 2, r: -1 },
+    { q: -1.5, r: -1 }, { q: -0.5, r: -1 }, { q: 0.5, r: -1 }, { q: 1.5, r: -1 },
     { q: -2, r: 0 }, { q: -1, r: 0 }, { q: 0, r: 0 }, { q: 1, r: 0 }, { q: 2, r: 0 },
-    { q: -2, r: 1 }, { q: -1, r: 1 }, { q: 0, r: 1 }, { q: 1, r: 1 },
+    { q: -1.5, r: 1 }, { q: -0.5, r: 1 }, { q: 0.5, r: 1 }, { q: 1.5, r: 1 },
     { q: -1, r: 2 }, { q: 0, r: 2 }, { q: 1, r: 2 }
 ];
 
@@ -81,10 +81,12 @@ function generateBoard() {
 function generateSettleSpots() {
     return [
         {
-            coords: [[-1,-2],[0,-2],[0,-1]]
+            coords: [[-1,-2],[0,-2],[0,-1]],
+            playerId: null
         },
         {
-            coords: [[0,-2], [0,-1], [1,-1]]
+            coords: [[0,-2], [0,-1], [1,-1]],
+            playerId: null
         }
     ]
 }
