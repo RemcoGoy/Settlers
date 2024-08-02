@@ -12,3 +12,13 @@ export function PlaceInitialSettlement({G, playerID}: {G: GameState, playerID: a
     PlaceSettlement({G, playerID}, cellId);
     PlaceRoad({G, playerID});
 }
+
+export function PlaceRobber({G, playerID}: {G: GameState, playerID: any}, tileId: number) {
+    const oldRobberTile = G.tiles.find(tile => tile.hasRobber);
+    if (oldRobberTile) {
+        const oldRobberIndex = G.tiles.indexOf(oldRobberTile);
+        G.tiles[oldRobberIndex].hasRobber = false;
+    }
+
+    G.tiles[tileId].hasRobber = true;
+}

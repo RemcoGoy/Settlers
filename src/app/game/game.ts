@@ -1,5 +1,5 @@
-import { Direction, GameState, Resource, Tile } from "@/types/game";
-import { PlaceInitialSettlement, PlaceRoad, PlaceSettlement } from "./moves";
+import { Resource, Tile } from "@/types/game";
+import { PlaceInitialSettlement, PlaceRoad, PlaceRobber, PlaceSettlement } from "./moves";
 
 const values = Object.keys(Resource);
 
@@ -59,17 +59,10 @@ function generateBoard() {
             tile_data = {
                 type: resource as Resource,
                 number: value,
-                settleSpots: {
-                   [Direction.N]: null,
-                   [Direction.S]: null,
-                   [Direction.NE]: null,
-                   [Direction.SE]: null,
-                   [Direction.NW]: null,
-                   [Direction.SW]: null,
-                }
+                hasRobber: false
             }
         } else {
-            tile_data = { type: 'desert' } as Tile;
+            tile_data = { type: 'desert', hasRobber: true } as Tile;
         }
 
         map.push(tile_data ?? {} as Tile);
@@ -78,13 +71,17 @@ function generateBoard() {
     return map
 }
 
+function generateSettleSpots() {
+    return []
+}
+
 export const SettlersGame = {
-    setup: () => ({ tiles: generateBoard() }),
+    setup: () => ({ settleSpots: generateSettleSpots(), tiles: generateBoard(),  }),
 
     phases: {
         settle: {
             moves: {
-                PlaceInitialSettlement
+                PlaceInitialSettlement,
             },
             start: true,
             next: 'play'
@@ -93,7 +90,8 @@ export const SettlersGame = {
         play: {
             moves: {
                 PlaceSettlement,
-                PlaceRoad
+                PlaceRoad,
+                PlaceRobber
             },
         }
     }

@@ -1,7 +1,7 @@
 import { GameState } from "@/types/game";
 import React, { useEffect, useState } from "react";
 import FontFaceObserver from 'fontfaceobserver';
-import { Stage, Layer, RegularPolygon, Text } from 'react-konva';
+import { Stage, Layer, RegularPolygon, Text, Star } from 'react-konva';
 
 
 
@@ -11,9 +11,10 @@ interface HexagonProps {
     radius: number;
     fill?: string;
     text?: string;
+    robber?: boolean;
 }
 
-const Hexagon: React.FC<HexagonProps> = ({ x, y, radius, fill, text }) => (
+const Hexagon: React.FC<HexagonProps> = ({ x, y, radius, fill, text, robber }) => (
     <>
         <RegularPolygon
             x={x}
@@ -25,6 +26,7 @@ const Hexagon: React.FC<HexagonProps> = ({ x, y, radius, fill, text }) => (
             strokeWidth={1}
         />
         {text && <Text x={x - 13 * text.length} y={y - 26} text={text} fontFamily="'Ubuntu Mono'" fontSize={54} align="center" verticalAlign="middle" />}
+        {robber && <Star fill={'black'} x={x - 50} y={y} innerRadius={10} outerRadius={15} numPoints={5} />}
     </>
 );
 
@@ -72,7 +74,7 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
             else if (resource === 'wheat') fill = '#f4e285';
             else if (resource === 'ore') fill = '#8da1b9';
 
-            const newHex = { x, y, radius, fill, text: tile.number?.toString() }
+            const newHex = { x, y, radius, fill, text: tile.number?.toString(), robber: tile.hasRobber }
 
             newBoard.push(newHex);
         }
@@ -86,6 +88,7 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
                 <Stage width={canvasSize.width} height={canvasSize.height} className="gameBoard">
                     <Layer>
                         {hexagons && hexagons.map((hex, index) => <Hexagon key={index} {...hex} />)}
+
                     </Layer>
                 </Stage>
             }
