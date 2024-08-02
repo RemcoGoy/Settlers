@@ -1,7 +1,13 @@
 import { Resource, Tile } from "@/types/game";
-import { PlaceInitialSettlement, PlaceRoad, PlaceRobber, PlaceSettlement } from "./moves";
+import { PlaceRoad, PlaceRobber, PlaceSettlement } from "./moves";
 
-const values = Object.keys(Resource);
+export const boardLayout = [
+    { q: -1, r: -2 }, { q: 0, r: -2 }, { q: 1, r: -2 },
+    { q: -1, r: -1 }, { q: 0, r: -1 }, { q: 1, r: -1 }, { q: 2, r: -1 },
+    { q: -2, r: 0 }, { q: -1, r: 0 }, { q: 0, r: 0 }, { q: 1, r: 0 }, { q: 2, r: 0 },
+    { q: -2, r: 1 }, { q: -1, r: 1 }, { q: 0, r: 1 }, { q: 1, r: 1 },
+    { q: -1, r: 2 }, { q: 0, r: 2 }, { q: 1, r: 2 }
+];
 
 function generateBoard() {
     let resource_options = new Map([
@@ -28,7 +34,7 @@ function generateBoard() {
 
     const map: Tile[] = [];
 
-    for (let i = 0; i < 19; i++) {
+    for (let i = 0; i < boardLayout.length; i++) {
         let tile_data: Tile | null = null;
 
         const resource_items = Array.from(resource_options);
@@ -72,7 +78,14 @@ function generateBoard() {
 }
 
 function generateSettleSpots() {
-    return []
+    return [
+        {
+            coords: [[-1,-2],[0,-2],[0,-1]]
+        },
+        {
+            coords: [[0,-2], [0,-1], [1,-1]]
+        }
+    ]
 }
 
 export const SettlersGame = {
@@ -81,7 +94,7 @@ export const SettlersGame = {
     phases: {
         settle: {
             moves: {
-                PlaceInitialSettlement,
+                PlaceSettlement,
             },
             start: true,
             next: 'play'

@@ -13,6 +13,11 @@ export type Tile = {
     hasRobber: boolean
 }
 
+export type SettleSpot = {
+    coords: number[][]
+}
+
 export type GameState = {
-    tiles: Array<Tile>
+    tiles: Array<Tile>,
+    settleSpots: Array<SettleSpot>
 }
