@@ -18,9 +18,14 @@ export function PlaceRoad({ G, playerID }: { G: GameState, playerID: any }) {
 export function PlaceRobber({ G, playerID }: { G: GameState, playerID: any }, tileId: number) {
     const oldRobberTile = G.tiles.find(tile => tile.hasRobber);
     if (oldRobberTile) {
-        const oldRobberIndex = G.tiles.indexOf(oldRobberTile);
-        G.tiles[oldRobberIndex].hasRobber = false;
+        oldRobberTile.hasRobber = false;
+    } else {
+        return INVALID_MOVE;
     }
 
-    G.tiles[tileId].hasRobber = true;
+    if (G.tiles[tileId].type === 'sea') {
+        return INVALID_MOVE
+    } else {
+        G.tiles[tileId].hasRobber = true;
+    }
 }

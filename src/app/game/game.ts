@@ -159,6 +159,7 @@ export const SettlersGame = {
         settle: {
             moves: {
                 PlaceSettlement,
+                PlaceRobber
             },
             start: true,
             next: 'play'
