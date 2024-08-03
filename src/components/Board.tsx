@@ -44,10 +44,10 @@ function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
     )
 }
 
-function SettleSpot({ x, y, id }: SettleSpotProps) {
+function SettleSpot({ x, y }: SettleSpotProps) {
     return (
         <>
-            <Circle x={x} y={y} radius={10} fill="gray" />
+            <Circle x={x} y={y} radius={15} fill="gray" />
         </>
     )
 }
