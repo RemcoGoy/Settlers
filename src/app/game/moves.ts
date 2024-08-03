@@ -8,6 +8,10 @@ export const PlaceSettlement: Move<GameState> = ({G, ctx}, coords: number[][]) =
 
     if (settleSpot && settleSpot.playerId === null) {
         settleSpot.playerId = playerID;
+        const player = G.players.find(p => p.id === playerID);
+        if (player) {
+            player.points++;
+        }
     } else {
         return INVALID_MOVE
     }

@@ -160,7 +160,7 @@ export const SettlersGame = {
         initialSettle: {
             moves: {
                 PlaceSettlement,
-                RollDice
+                PlaceRoad
             },
             start: true,
             next: 'play',
