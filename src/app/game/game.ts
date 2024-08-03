@@ -1,5 +1,5 @@
 import { Resource, SettleSpot, Tile } from "@/types/game";
-import { PlaceRoad, PlaceRobber, PlaceSettlement } from "./moves";
+import { PlaceRoad, PlaceRobber, PlaceSettlement, RollDice } from "./moves";
 
 export const boardLayout = [
     { q: -1.5, r: -3, sea: true }, { q: -0.5, r: -3, sea: true }, { q: 0.5, r: -3, sea: true }, { q: 1.5, r: -3, sea: true },
@@ -165,7 +165,7 @@ export const SettlersGame = {
         settle: {
             moves: {
                 PlaceSettlement,
-                PlaceRobber
+                RollDice
             },
             start: true,
             next: 'play'
@@ -175,7 +175,8 @@ export const SettlersGame = {
             moves: {
                 PlaceSettlement,
                 PlaceRoad,
-                PlaceRobber
+                PlaceRobber,
+                RollDice
             },
         }
     }
