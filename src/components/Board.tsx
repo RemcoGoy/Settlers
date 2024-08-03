@@ -46,7 +46,7 @@ function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
 }
 
 function SettleSpot({ x, y, fill, handleClick }: SettleSpotProps) {
-    return (<RegularPolygon sides={6} onClick={handleClick} x={x} y={y} radius={15} fill={fill ?? "gray"} />)
+    return (<Circle onClick={handleClick} x={x} y={y} radius={15} fill={fill ?? "gray"} />)
 }
 
 export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves: any }) {
