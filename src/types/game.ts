@@ -4,7 +4,8 @@ export enum Resource {
     brick = "brick",
     wood = "wood",
     wool = "wool",
-    desert = "desert"
+    desert = "desert",
+    sea = "sea"
 }
 
 export type Tile = {
@@ -16,7 +17,7 @@ export type Tile = {
 
 export type SettleSpot = {
     coords: number[][],
-    playerId: number | null
+    playerId: number | null,
 }
 
 export type GameState = {

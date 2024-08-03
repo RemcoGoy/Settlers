@@ -20,6 +20,7 @@ interface HexagonProps {
 interface SettleSpotProps {
     x: number;
     y: number;
+    id: number
 }
 
 function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
@@ -43,9 +44,11 @@ function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
     )
 }
 
-function SettleSpot({ x, y }: SettleSpotProps) {
+function SettleSpot({ x, y, id }: SettleSpotProps) {
     return (
-        <Circle x={x} y={y} radius={10} fill="gray" />
+        <>
+            <Circle x={x} y={y} radius={10} fill="gray" />
+        </>
     )
 }
 
@@ -53,7 +56,7 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
     const [hexagons, setHexagons] = useState<any[]>([]);
     const [settleLocations, setSettleLocations] = useState<any[]>([])
 
-    const [canvasSize, setCanvasSize] = useState({ width: 1200, height: 1200 });
+    const [canvasSize, setCanvasSize] = useState({ width: 1250, height: 1250 });
     const [fontLoaded, setFontLoaded] = useState(false);
 
     const RADIUS = 100;
@@ -94,6 +97,7 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
             else if (resource === 'wool') fill = '#8cb369';
             else if (resource === 'wheat') fill = '#f4e285';
             else if (resource === 'ore') fill = '#8da1b9';
+            else if (resource === 'sea') fill = '#c9ebed';
 
             const newHex = { x, y, q: coords.q, r: coords.r, radius: RADIUS, fill, text: tile.number?.toString(), robber: tile.hasRobber }
 
