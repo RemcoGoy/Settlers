@@ -1,4 +1,4 @@
-import { GameState, Resource, SettleSpot, Tile } from "@/types/game";
+import { GameState, Resource, RoadData, SettleSpot, Tile } from "@/types/game";
 import { PlaceRoad, PlaceRobber, PlaceSettlement, RollDice } from "./moves";
 
 export const boardLayout = [
@@ -148,16 +148,22 @@ function generateSettleSpots() {
     return settleSpots;
 }
 
+function generateRoads(settleSpots: SettleSpot[]) {
+    const roads: RoadData[] = [];
+
+    return roads;
+}
+
+const settleSpots = generateSettleSpots();
+const tiles = generateBoard();
+
 export const SettlersGame = {
     setup: () => ({
-        settleSpots: generateSettleSpots(),
-        tiles: generateBoard(),
+        settleSpots,
+        tiles,
         players: [{id: '0', color: 'blue', points: 0}, {id: '1', color: 'red', points: 0}],
         currentDice: [0, 0],
-        roads: [ {
-            coords: [[[-1,-2],[0,-2],[-0.5,-1]], [[0,-2],[-0.5,-1],[0.5,-1]]],
-            player: '0'
-        } ]
+        roads: generateRoads(settleSpots)
     }),
 
     phases: {
