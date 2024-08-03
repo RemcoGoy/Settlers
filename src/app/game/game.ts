@@ -153,7 +153,16 @@ function generateSettleSpots() {
 }
 
 export const SettlersGame = {
-    setup: () => ({ settleSpots: generateSettleSpots(), tiles: generateBoard(), }),
+    setup: () => ({
+        settleSpots: generateSettleSpots(), tiles: generateBoard(), players: {
+            '0': {
+                color: 'blue'
+            },
+            '1': {
+                color: 'red'
+            }
+        }
+    }),
 
     phases: {
         settle: {

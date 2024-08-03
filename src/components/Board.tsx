@@ -20,7 +20,7 @@ interface HexagonProps {
 interface SettleSpotProps {
     x: number;
     y: number;
-    id: number
+    fill: string;
 }
 
 function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
@@ -44,10 +44,10 @@ function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
     )
 }
 
-function SettleSpot({ x, y }: SettleSpotProps) {
+function SettleSpot({ x, y, fill }: SettleSpotProps) {
     return (
         <>
-            <Circle x={x} y={y} radius={15} fill="gray" />
+            <Circle x={x} y={y} radius={15} fill={fill ?? "gray"} />
         </>
     )
 }
@@ -114,7 +114,7 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
             const settleSpot = G.settleSpots[i];
             const coords = settleSpot.coords;
 
-            const newSettle = { x: -1, y: -1 }
+            const newSettle: { x: number, y: number, fill: string | null } = { x: -1, y: -1, fill: null }
 
             if (coords[0][1] === coords[1][1]) {
                 const x = getHexX((coords[1][0] + coords[0][0]) / 2);
@@ -130,6 +130,9 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
                 newSettle['y'] = y - RADIUS / 2;
             }
 
+            if (settleSpot.playerId) {
+                newSettle['fill'] = G.players[settleSpot.playerId].color;
+            }
             settles.push(newSettle);
         }
 

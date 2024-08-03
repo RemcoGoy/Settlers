@@ -22,5 +22,10 @@ export type SettleSpot = {
 
 export type GameState = {
     tiles: Array<Tile>,
-    settleSpots: Array<SettleSpot>
+    settleSpots: Array<SettleSpot>,
+    players: {
+        [key: string]: {
+            color: string;
+        };
+    };
 }
