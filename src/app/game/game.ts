@@ -1,4 +1,4 @@
-import { Resource, Tile } from "@/types/game";
+import { Resource, SettleSpot, Tile } from "@/types/game";
 import { PlaceRoad, PlaceRobber, PlaceSettlement } from "./moves";
 
 export const boardLayout = [
@@ -79,20 +79,30 @@ function generateBoard() {
 }
 
 function generateSettleSpots() {
-    return [
-        {
-            coords: [[-1,-2],[0,-2],[-0.5,-1]],
-            playerId: null
-        },
-        {
-            coords: [[0,-2], [-0.5,-1], [0.5,-1]],
-            playerId: null
+    const settleSpots: SettleSpot[] = [];
+
+    for (let i = 0; i < boardLayout.length - 1; i++) {
+        const hex = boardLayout[i];
+        const nextHex = boardLayout[i + 1];
+
+        if (nextHex.r === hex.r) {
+            settleSpots.push({
+                coords: [[hex.q, hex.r], [nextHex.q, nextHex.r], [hex.q + 0.5, hex.r + 1]],
+                playerId: null
+            })
+
+            settleSpots.push({
+                coords: [[hex.q + 0.5, hex.r - 1], [hex.q, hex.r], [nextHex.q, nextHex.r]],
+                playerId: null
+            })
         }
-    ]
+    }
+
+    return settleSpots;
 }
 
 export const SettlersGame = {
-    setup: () => ({ settleSpots: generateSettleSpots(), tiles: generateBoard(),  }),
+    setup: () => ({ settleSpots: generateSettleSpots(), tiles: generateBoard(), }),
 
     phases: {
         settle: {
