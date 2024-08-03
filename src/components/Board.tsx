@@ -37,6 +37,7 @@ function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
                 fill={fill}
                 stroke={'black'}
                 strokeWidth={1}
+                onClick={(e) => console.log(e)}
             />
             <Text x={x - coords.length * 4} y={y - 50} text={coords} fontFamily="'Ubuntu Mono'" fontSize={18} />
             {text && <Text x={x - 13 * text.length} y={y - 26} text={text} fontFamily="'Ubuntu Mono'" fontSize={54} align="center" verticalAlign="middle" />}
@@ -45,16 +46,12 @@ function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
     )
 }
 
-function SettleSpot({ x, y, fill, onclick }: SettleSpotProps) {
+function SettleSpot({ x, y, fill }: SettleSpotProps) {
     const handleClick = (e: any) => {
         console.log(e);
     }
 
-    return (
-        <>
-            <Circle onClick={handleClick} x={x} y={y} radius={15} fill={fill ?? "gray"} />
-        </>
-    )
+    return (<RegularPolygon sides={6} onClick={handleClick} x={x} y={y} radius={15} fill={fill ?? "gray"} />)
 }
 
 export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves: any }) {
@@ -123,6 +120,7 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
                 console.log("Clicked on settle spot");
                 // moves.PlaceSettlement(settleSpot.coords);
             }
+
             const newSettle: { x: number, y: number, fill: string | null, onclick: () => void } = { x: -1, y: -1, fill: null, onclick }
 
             if (coords[0][1] === coords[1][1]) {
