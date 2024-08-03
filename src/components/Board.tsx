@@ -129,7 +129,7 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
             }
 
             if (settleSpot.playerId) {
-                newSettle['fill'] = G.players[settleSpot.playerId].color;
+                newSettle['fill'] = G.players.find(p => p.id === settleSpot.playerId)?.color ?? null;
             }
 
             settles.push(newSettle);

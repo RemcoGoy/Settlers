@@ -1,4 +1,4 @@
-import { Resource, SettleSpot, Tile } from "@/types/game";
+import { GameState, Resource, SettleSpot, Tile } from "@/types/game";
 import { PlaceRoad, PlaceRobber, PlaceSettlement, RollDice } from "./moves";
 
 export const boardLayout = [
@@ -150,25 +150,21 @@ function generateSettleSpots() {
 
 export const SettlersGame = {
     setup: () => ({
-        settleSpots: generateSettleSpots(), tiles: generateBoard(), players: {
-            '0': {
-                color: 'blue'
-            },
-            '1': {
-                color: 'red'
-            }
-        },
+        settleSpots: generateSettleSpots(),
+        tiles: generateBoard(),
+        players: [{id: '0', color: 'blue', points: 0}, {id: '1', color: 'red', points: 0}],
         currentDice: [0, 0]
     }),
 
     phases: {
-        settle: {
+        initialSettle: {
             moves: {
                 PlaceSettlement,
                 RollDice
             },
             start: true,
-            next: 'play'
+            next: 'play',
+            endIf: ({G}: {G: GameState}) => G.players.every(p => p.points === 2)
         },
 
         play: {

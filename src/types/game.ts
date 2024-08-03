@@ -20,13 +20,15 @@ export type SettleSpot = {
     playerId: string | null,
 }
 
+export type Player = {
+    id: string,
+    color: string,
+    points: number
+}
+
 export interface GameState {
     tiles: Array<Tile>,
     settleSpots: Array<SettleSpot>,
-    players: {
-        [key: string]: {
-            color: string;
-        };
-    };
+    players: Player[],
     currentDice: number[];
 }
