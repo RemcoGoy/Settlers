@@ -53,7 +53,6 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
     const [hexagons, setHexagons] = useState<any[]>([]);
     const [settleLocations, setSettleLocations] = useState<any[]>([])
 
-    const [canvasSize, setCanvasSize] = useState({ width: window.innerWidth, height: window.innerHeight });
     const [fontLoaded, setFontLoaded] = useState(false);
 
     const RADIUS = 75;
@@ -61,11 +60,11 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
     const HEX_HEIGHT = 2 * RADIUS;
 
     function getHexX(q: number) {
-        return canvasSize.width / 2 + q * HEX_WIDTH;
+        return window.innerWidth / 2 + q * HEX_WIDTH;
     }
 
     function getHexY(r: number) {
-        return canvasSize.height / 2 + r * HEX_HEIGHT * 3 / 4;
+        return window.innerHeight / 2 + r * HEX_HEIGHT * 3 / 4;
     }
 
     useEffect(() => {
@@ -75,8 +74,6 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
 
     useEffect(() => {
         const newBoard: HexagonProps[] = [];
-
-
 
         for (let i = 0; i < G.tiles.length; i++) {
             const coords = boardLayout[i];
@@ -144,7 +141,7 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
     return (
         <div className="gameContainer">
             {fontLoaded &&
-                <Stage width={canvasSize.width} height={canvasSize.height} className="gameBoard">
+                <Stage width={window.innerWidth} height={window.innerHeight} className="gameBoard">
                     <Layer>
                         {hexagons && hexagons.map((hex, index) => <Hexagon key={index} {...hex} />)}
                         {settleLocations && settleLocations.map((location, index) => <SettleSpot key={index} {...location} />)}

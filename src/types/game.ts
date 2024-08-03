@@ -17,10 +17,10 @@ export type Tile = {
 
 export type SettleSpot = {
     coords: number[][],
-    playerId: number | null,
+    playerId: string | null,
 }
 
-export type GameState = {
+export interface GameState {
     tiles: Array<Tile>,
     settleSpots: Array<SettleSpot>,
     players: {
@@ -28,4 +28,5 @@ export type GameState = {
             color: string;
         };
     };
+    currentDice: number[];
 }

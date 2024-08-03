@@ -1,21 +1,23 @@
 import { GameState } from "@/types/game";
+import { Move } from "boardgame.io";
 import { INVALID_MOVE } from 'boardgame.io/core';
 
-export function PlaceSettlement({ G, playerID }: { G: GameState, playerID: any }, coords: number[][]) {
+export const PlaceSettlement: Move<GameState> = ({G, ctx}, coords: number[][]) => {
     const settleSpot = G.settleSpots.find(spot => JSON.stringify(spot.coords) === JSON.stringify(coords));
+    const playerID = ctx.currentPlayer;
 
     if (settleSpot && settleSpot.playerId === null) {
         settleSpot.playerId = playerID;
     } else {
         return INVALID_MOVE
     }
-}
+};
 
-export function PlaceRoad({ G, playerID }: { G: GameState, playerID: any }) {
-    console.log(`Player ${playerID} is building a road`);
-}
+export const PlaceRoad: Move<GameState> = ({G, ctx}) => {
+    console.log(`Player ${ctx.currentPlayer} is building a road`);
+};
 
-export function PlaceRobber({ G, playerID }: { G: GameState, playerID: any }, tileId: number) {
+export const PlaceRobber: Move<GameState> = ({G, ctx}, tileId: number) => {
     const oldRobberTile = G.tiles.find(tile => tile.hasRobber);
     if (oldRobberTile) {
         oldRobberTile.hasRobber = false;
@@ -28,4 +30,6 @@ export function PlaceRobber({ G, playerID }: { G: GameState, playerID: any }, ti
     } else {
         G.tiles[tileId].hasRobber = true;
     }
-}
+};
+
+export const RollDice: Move<GameState> = ({ G, ctx }) => {};

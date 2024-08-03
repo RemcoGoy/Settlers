@@ -88,10 +88,6 @@ function generateBoard() {
     return map
 }
 
-function compareSpots(coords1: number[][], coords2: number[][]) {
-    return JSON.stringify(coords1) === JSON.stringify(coords2);
-}
-
 function generateSettleSpots() {
     const settleSpots: SettleSpot[] = [];
 
@@ -161,7 +157,8 @@ export const SettlersGame = {
             '1': {
                 color: 'red'
             }
-        }
+        },
+        currentDice: [0, 0]
     }),
 
     phases: {
