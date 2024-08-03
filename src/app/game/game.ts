@@ -88,6 +88,10 @@ function generateBoard() {
     return map
 }
 
+function compareSpots(coords1: number[][], coords2: number[][]) {
+    return JSON.stringify(coords1) === JSON.stringify(coords2);
+}
+
 function generateSettleSpots() {
     const settleSpots: SettleSpot[] = [];
 
@@ -95,15 +99,53 @@ function generateSettleSpots() {
         const hex = boardLayout[i];
 
         if (hex.sea !== true) {
-            settleSpots.push({
-                coords: [[hex.q - 0.5, hex.r - 1], [hex.q + 0.5, hex.r - 1], [hex.q, hex.r]],
-                playerId: null,
-            })
+            const spot_N = [[hex.q - 0.5, hex.r - 1], [hex.q + 0.5, hex.r - 1], [hex.q, hex.r]];
+            if (settleSpots.findIndex(x => JSON.stringify(x.coords) === JSON.stringify(spot_N)) === -1) {
+                settleSpots.push({
+                    coords: spot_N,
+                    playerId: null,
+                });
+            }
 
-            settleSpots.push({
-                coords: [[hex.q, hex.r], [hex.q - 0.5, hex.r + 1], [hex.q + 0.5, hex.r + 1]],
-                playerId: null,
-            })
+            const spot_S = [[hex.q, hex.r], [hex.q - 0.5, hex.r + 1], [hex.q + 0.5, hex.r + 1]];
+            if (settleSpots.findIndex(x => JSON.stringify(x.coords) === JSON.stringify(spot_S)) === -1) {
+                settleSpots.push({
+                    coords: spot_S,
+                    playerId: null,
+                });
+            }
+
+            const spot_NW = [[hex.q - 0.5, hex.r - 1], [hex.q - 1, hex.r], [hex.q, hex.r]];
+            if (settleSpots.findIndex(x => JSON.stringify(x.coords) === JSON.stringify(spot_NW)) === -1) {
+                settleSpots.push({
+                    coords: spot_NW,
+                    playerId: null,
+                });
+            }
+
+            const spot_SW = [[hex.q - 1, hex.r], [hex.q, hex.r], [hex.q - 0.5, hex.r + 1]];
+            if (settleSpots.findIndex(x => JSON.stringify(x.coords) === JSON.stringify(spot_SW)) === -1) {
+                settleSpots.push({
+                    coords: spot_SW,
+                    playerId: null,
+                });
+            }
+
+            const spot_NE = [[hex.q + 0.5, hex.r - 1], [hex.q, hex.r], [hex.q + 1, hex.r]];
+            if (settleSpots.findIndex(x => JSON.stringify(x.coords) === JSON.stringify(spot_NE)) === -1) {
+                settleSpots.push({
+                    coords: spot_NE,
+                    playerId: null,
+                });
+            }
+
+            const spot_SE = [[hex.q, hex.r], [hex.q + 1, hex.r], [hex.q + 0.5, hex.r + 1]];
+            if (settleSpots.findIndex(x => JSON.stringify(x.coords) === JSON.stringify(spot_SE)) === -1) {
+                settleSpots.push({
+                    coords: spot_SE,
+                    playerId: null,
+                });
+            }
         }
     }
 
