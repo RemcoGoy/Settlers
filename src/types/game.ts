@@ -26,9 +26,15 @@ export type Player = {
     points: number
 }
 
+export type RoadData = {
+    coords: number[][][],
+    player: string
+}
+
 export interface GameState {
     tiles: Array<Tile>,
     settleSpots: Array<SettleSpot>,
+    roads: Array<RoadData>,
     players: Player[],
     currentDice: number[];
 }

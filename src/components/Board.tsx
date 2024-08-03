@@ -24,6 +24,11 @@ interface SettleSpotProps {
     handleClick: (e: any) => void;
 }
 
+interface RoadProps {
+    x: number;
+    y: number;
+}
+
 function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
     const coords = q + "," + r;
 
@@ -49,9 +54,14 @@ function SettleSpot({ x, y, fill, handleClick }: SettleSpotProps) {
     return (<Circle onClick={handleClick} x={x} y={y} radius={15} fill={fill ?? "gray"} />)
 }
 
+function Road({ x, y }: RoadProps) {
+    return (<RegularPolygon x={x} y={y} radius={15} sides={4} fill='black' />)
+}
+
 export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves: any }) {
     const [hexagons, setHexagons] = useState<any[]>([]);
-    const [settleLocations, setSettleLocations] = useState<any[]>([])
+    const [settleLocations, setSettleLocations] = useState<any[]>([]);
+    const [roads, setRoads] = useState<any[]>([]);
 
     const [fontLoaded, setFontLoaded] = useState(false);
 
@@ -65,6 +75,21 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
 
     function getHexY(r: number) {
         return window.innerHeight / 2 + r * HEX_HEIGHT * 3 / 4;
+    }
+
+    function getSettleXY(coords: number[][]) {
+        let x = 0;
+        let y = 0;
+
+        if (coords[0][1] === coords[1][1]) {
+            x = getHexX((coords[1][0] + coords[0][0]) / 2);
+            y = getHexY(coords[2][1]) - RADIUS;
+        } else {
+            x = getHexX(coords[0][0]);
+            y = getHexY(coords[1][1]) - RADIUS / 2;
+        }
+
+        return { x: x, y: y }
     }
 
     useEffect(() => {
@@ -114,19 +139,10 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
 
             const newSettle: SettleSpotProps = { x: -1, y: -1, fill: null, handleClick }
 
-            if (coords[0][1] === coords[1][1]) {
-                const x = getHexX((coords[1][0] + coords[0][0]) / 2);
-                const y = getHexY(coords[2][1]);
+            const { x, y } = getSettleXY(coords);
 
-                newSettle['x'] = x;
-                newSettle['y'] = y - RADIUS;
-            } else {
-                const x = getHexX(coords[0][0]);
-                const y = getHexY(coords[1][1]);
-
-                newSettle['x'] = x;
-                newSettle['y'] = y - RADIUS / 2;
-            }
+            newSettle['x'] = x;
+            newSettle['y'] = y;
 
             if (settleSpot.playerId) {
                 newSettle['fill'] = G.players.find(p => p.id === settleSpot.playerId)?.color ?? null;
@@ -138,6 +154,24 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
         setSettleLocations(settles)
     }, [G.settleSpots]);
 
+    useEffect(() => {
+        const roads: any[] = [];
+
+        for (let i = 0; i < G.roads.length; i++) {
+            const road = G.roads[i];
+
+            const xy1 = getSettleXY(road.coords[0]);
+            const xy2 = getSettleXY(road.coords[1]);
+
+            const x = (xy1.x + xy2.x) / 2;
+            const y = (xy1.y + xy2.y) / 2;
+
+            roads.push({ x, y });
+        }
+
+        setRoads(roads);
+    }, [G.roads]);
+
     return (
         <div className="gameContainer">
             {fontLoaded &&
@@ -145,6 +179,7 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
                     <Layer>
                         {hexagons && hexagons.map((hex, index) => <Hexagon key={index} {...hex} />)}
                         {settleLocations && settleLocations.map((location, index) => <SettleSpot key={index} {...location} />)}
+                        {roads && roads.map((road, index) => <Road key={index} {...road} />)}
                     </Layer>
                 </Stage>
             }

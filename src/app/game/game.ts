@@ -153,7 +153,11 @@ export const SettlersGame = {
         settleSpots: generateSettleSpots(),
         tiles: generateBoard(),
         players: [{id: '0', color: 'blue', points: 0}, {id: '1', color: 'red', points: 0}],
-        currentDice: [0, 0]
+        currentDice: [0, 0],
+        roads: [ {
+            coords: [[[-1,-2],[0,-2],[-0.5,-1]], [[0,-2],[-0.5,-1],[0.5,-1]]],
+            player: '0'
+        } ]
     }),
 
     phases: {
