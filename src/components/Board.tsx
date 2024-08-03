@@ -20,8 +20,8 @@ interface HexagonProps {
 interface SettleSpotProps {
     x: number;
     y: number;
-    fill: string;
-    onclick: () => void;
+    fill: string | null;
+    handleClick: (e: any) => void;
 }
 
 function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
@@ -37,20 +37,15 @@ function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
                 fill={fill}
                 stroke={'black'}
                 strokeWidth={1}
-                onClick={(e) => console.log(e)}
             />
-            <Text x={x - coords.length * 4} y={y - 50} text={coords} fontFamily="'Ubuntu Mono'" fontSize={18} />
-            {text && <Text x={x - 13 * text.length} y={y - 26} text={text} fontFamily="'Ubuntu Mono'" fontSize={54} align="center" verticalAlign="middle" />}
+            <Text x={x - coords.length * 5} y={y - 45} text={coords} fontFamily="'Ubuntu Mono'" fontSize={18} />
+            {text && <Text x={x - 11 * text.length} y={y - 20} text={text} fontFamily="'Ubuntu Mono'" fontSize={42} align="center" verticalAlign="middle" />}
             {robber && <Star fill={'black'} x={x - 50} y={y} innerRadius={10} outerRadius={15} numPoints={5} />}
         </>
     )
 }
 
-function SettleSpot({ x, y, fill }: SettleSpotProps) {
-    const handleClick = (e: any) => {
-        console.log(e);
-    }
-
+function SettleSpot({ x, y, fill, handleClick }: SettleSpotProps) {
     return (<RegularPolygon sides={6} onClick={handleClick} x={x} y={y} radius={15} fill={fill ?? "gray"} />)
 }
 
@@ -58,10 +53,10 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
     const [hexagons, setHexagons] = useState<any[]>([]);
     const [settleLocations, setSettleLocations] = useState<any[]>([])
 
-    const [canvasSize, setCanvasSize] = useState({ width: 1250, height: 1250 });
+    const [canvasSize, setCanvasSize] = useState({ width: window.innerWidth, height: window.innerHeight });
     const [fontLoaded, setFontLoaded] = useState(false);
 
-    const RADIUS = 100;
+    const RADIUS = 75;
     const HEX_WIDTH = Math.sqrt(3) * RADIUS;
     const HEX_HEIGHT = 2 * RADIUS;
 
@@ -116,12 +111,11 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
             const settleSpot = G.settleSpots[i];
             const coords = settleSpot.coords;
 
-            const onclick = () => {
-                console.log("Clicked on settle spot");
-                // moves.PlaceSettlement(settleSpot.coords);
+            const handleClick = (e: any) => {
+                moves.PlaceSettlement(settleSpot.coords);
             }
 
-            const newSettle: { x: number, y: number, fill: string | null, onclick: () => void } = { x: -1, y: -1, fill: null, onclick }
+            const newSettle: SettleSpotProps = { x: -1, y: -1, fill: null, handleClick }
 
             if (coords[0][1] === coords[1][1]) {
                 const x = getHexX((coords[1][0] + coords[0][0]) / 2);

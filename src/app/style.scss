@@ -26,15 +26,6 @@
         .konvajs-content {
             width: 100% !important;
             height: 100% !important;
-
-            canvas {
-                margin: auto !important;
-                padding: auto !important;
-                position: relative !important;
-
-                height: 100% !important;
-                object-fit: contain;
-            }
         }
     }
 }
