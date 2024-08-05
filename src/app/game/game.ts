@@ -1,5 +1,6 @@
 import { GameState, Resource, RoadData, SettleSpot, Tile } from "@/types/game";
 import { PlaceRoad, PlaceRobber, PlaceSettlement, RollDice } from "./moves";
+import { N_Settle, NE_Settle, NW_Settle, S_Settle, SE_Settle, SW_Settle } from "./helpers";
 
 export const boardLayout = [
     { q: -1.5, r: -3, sea: true }, { q: -0.5, r: -3, sea: true }, { q: 0.5, r: -3, sea: true }, { q: 1.5, r: -3, sea: true },
@@ -95,7 +96,7 @@ function generateSettleSpots() {
         const hex = boardLayout[i];
 
         if (hex.sea !== true) {
-            const spot_N = [[hex.q - 0.5, hex.r - 1], [hex.q + 0.5, hex.r - 1], [hex.q, hex.r]];
+            const spot_N = N_Settle(hex);
             if (settleSpots.findIndex(x => JSON.stringify(x.coords) === JSON.stringify(spot_N)) === -1) {
                 settleSpots.push({
                     coords: spot_N,
@@ -103,7 +104,7 @@ function generateSettleSpots() {
                 });
             }
 
-            const spot_S = [[hex.q, hex.r], [hex.q - 0.5, hex.r + 1], [hex.q + 0.5, hex.r + 1]];
+            const spot_S = S_Settle(hex);
             if (settleSpots.findIndex(x => JSON.stringify(x.coords) === JSON.stringify(spot_S)) === -1) {
                 settleSpots.push({
                     coords: spot_S,
@@ -111,7 +112,7 @@ function generateSettleSpots() {
                 });
             }
 
-            const spot_NW = [[hex.q - 0.5, hex.r - 1], [hex.q - 1, hex.r], [hex.q, hex.r]];
+            const spot_NW = NW_Settle(hex);
             if (settleSpots.findIndex(x => JSON.stringify(x.coords) === JSON.stringify(spot_NW)) === -1) {
                 settleSpots.push({
                     coords: spot_NW,
@@ -119,7 +120,7 @@ function generateSettleSpots() {
                 });
             }
 
-            const spot_SW = [[hex.q - 1, hex.r], [hex.q, hex.r], [hex.q - 0.5, hex.r + 1]];
+            const spot_SW = SW_Settle(hex);
             if (settleSpots.findIndex(x => JSON.stringify(x.coords) === JSON.stringify(spot_SW)) === -1) {
                 settleSpots.push({
                     coords: spot_SW,
@@ -127,7 +128,7 @@ function generateSettleSpots() {
                 });
             }
 
-            const spot_NE = [[hex.q + 0.5, hex.r - 1], [hex.q, hex.r], [hex.q + 1, hex.r]];
+            const spot_NE = NE_Settle(hex);
             if (settleSpots.findIndex(x => JSON.stringify(x.coords) === JSON.stringify(spot_NE)) === -1) {
                 settleSpots.push({
                     coords: spot_NE,
@@ -135,7 +136,7 @@ function generateSettleSpots() {
                 });
             }
 
-            const spot_SE = [[hex.q, hex.r], [hex.q + 1, hex.r], [hex.q + 0.5, hex.r + 1]];
+            const spot_SE = SE_Settle(hex);
             if (settleSpots.findIndex(x => JSON.stringify(x.coords) === JSON.stringify(spot_SE)) === -1) {
                 settleSpots.push({
                     coords: spot_SE,
@@ -159,10 +160,10 @@ const tiles = generateBoard();
 
 export const SettlersGame = {
     setup: () => ({
+        players: [{ id: '0', color: 'blue', points: 0 }, { id: '1', color: 'red', points: 0 }],
+        currentDice: [0, 0],
         settleSpots,
         tiles,
-        players: [{id: '0', color: 'blue', points: 0}, {id: '1', color: 'red', points: 0}],
-        currentDice: [0, 0],
         roads: generateRoads(settleSpots)
     }),
 
@@ -174,7 +175,7 @@ export const SettlersGame = {
             },
             start: true,
             next: 'play',
-            endIf: ({G}: {G: GameState}) => G.players.every(p => p.points === 2)
+            endIf: ({ G }: { G: GameState }) => G.players.every(p => p.points === 2)
         },
 
         play: {
