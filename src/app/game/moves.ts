@@ -1,5 +1,5 @@
 import { GameState, SettleSpot } from "@/lib/types/game";
-import { hasAdjecentRoads, hasAdjecentSettles, placeSettlement } from "@/lib/utils";
+import { hasAdjecentRoads, hasAdjecentSettles, placeSettlement, rHasAdjecentRoad, rHasAdjecentSettle } from "@/lib/utils";
 import { Move } from "boardgame.io";
 import { INVALID_MOVE } from 'boardgame.io/core';
 
@@ -36,38 +36,7 @@ export const PlaceSettlement: Move<GameState> = ({ G, ctx }, coords: number[][])
 export const PlaceRoad: Move<GameState> = ({ G, ctx }, coords: number[][][]) => {
     const road = G.roads.find(r => JSON.stringify(r.coords) === JSON.stringify(coords));
     if (road && road.playerId === null) {
-        // Check for adjecent settle
-        let adjecentSettle = false;
-
-        const adjecentSettles = [];
-        for (const coord of coords) {
-            const settle = G.settleSpots.find(s => JSON.stringify(coord) === JSON.stringify(s.coords));
-            if (settle) {
-                adjecentSettles.push(settle);
-            }
-        }
-
-        if (adjecentSettles.some(s => s.playerId === ctx.currentPlayer)) {
-            adjecentSettle = true;
-        }
-
-        // Check for adjecent road
-        let adjecentRoad = false;
-
-        for (const coord of coords) {
-            const r = G.roads.filter(rx =>
-                (JSON.stringify(rx.coords[0]) === JSON.stringify(coord)
-                    || JSON.stringify(rx.coords[1]) === JSON.stringify(coord))
-                && JSON.stringify(rx.coords) !== JSON.stringify(road.coords)
-            );
-
-
-            if (!adjecentRoad && r.some(r => r.playerId === ctx.currentPlayer)) {
-                adjecentRoad = true;
-            }
-        }
-
-        if (adjecentSettle || adjecentRoad) {
+        if (rHasAdjecentSettle(G, road, ctx.currentPlayer) || rHasAdjecentRoad(G, road, ctx.currentPlayer)) {
             road.playerId = ctx.currentPlayer;
         } else {
             return INVALID_MOVE;

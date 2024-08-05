@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { GameState, SettleSpot } from "./types/game";
+import { GameState, RoadData, SettleSpot } from "./types/game";
 import { isTopSettle } from "./helpers/settle";
 
 export function cn(...inputs: ClassValue[]) {
@@ -66,6 +66,43 @@ export function hasAdjecentSettles(G: GameState, settleSpot: SettleSpot) {
   }
 
   return hasAdjecentSettles;
+}
+
+export function rHasAdjecentRoad(G: GameState, road: RoadData, currentPlayer: string) {
+  let adjecentRoad = false;
+
+  for (const coord of road.coords) {
+    const r = G.roads.filter(rx =>
+      (JSON.stringify(rx.coords[0]) === JSON.stringify(coord)
+        || JSON.stringify(rx.coords[1]) === JSON.stringify(coord))
+      && JSON.stringify(rx.coords) !== JSON.stringify(road.coords)
+    );
+
+
+    if (!adjecentRoad && r.some(r => r.playerId === currentPlayer)) {
+      adjecentRoad = true;
+    }
+  }
+
+  return adjecentRoad;
+}
+
+export function rHasAdjecentSettle(G: GameState, road: RoadData, currentPlayer: string) {
+  let adjecentSettle = false;
+
+  const adjecentSettles = [];
+  for (const coord of road.coords) {
+    const settle = G.settleSpots.find(s => JSON.stringify(coord) === JSON.stringify(s.coords));
+    if (settle) {
+      adjecentSettles.push(settle);
+    }
+  }
+
+  if (adjecentSettles.some(s => s.playerId === currentPlayer)) {
+    adjecentSettle = true;
+  }
+
+  return adjecentSettle;
 }
 
 export function placeSettlement(G: GameState, settleSpot: SettleSpot, currentPlayer: string) {
