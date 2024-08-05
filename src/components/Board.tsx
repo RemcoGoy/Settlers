@@ -136,7 +136,11 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
             const coords = settleSpot.coords;
 
             const handleClick = (e: any) => {
-                moves.PlaceSettlement(settleSpot.coords);
+                if (ctx.phase === "initialSettle") {
+                    moves.PlaceInitialSettlement(settleSpot.coords)
+                } else {
+                    moves.PlaceSettlement(settleSpot.coords);
+                }
             }
 
             const newSettle: SettleSpotProps = { x: -1, y: -1, fill: null, handleClick }
