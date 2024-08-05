@@ -1,13 +1,10 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { GameState, SettleSpot } from "./types/game";
+import { isTopSettle } from "./helpers/settle";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
-}
-
-export function isTopSettle(coords: number[][]) {
-  return coords[0][1] === coords[1][1];
 }
 
 export function hasAdjecentRoads(G: GameState, settleSpot: SettleSpot, currentPlayer: string) {

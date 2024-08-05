@@ -21,3 +21,7 @@ export function NE_Settle(hex: { q: number, r: number }) {
 export function SE_Settle(hex: { q: number, r: number }) {
     return [[hex.q, hex.r], [hex.q + 1, hex.r], [hex.q + 0.5, hex.r + 1]];
 }
+
+export function isTopSettle(coords: number[][]) {
+    return coords[0][1] === coords[1][1];
+}

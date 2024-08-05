@@ -1,5 +1,5 @@
 import { GameState, SettleSpot } from "@/lib/types/game";
-import { hasAdjecentRoads, hasAdjecentSettles, isTopSettle, placeSettlement } from "@/lib/utils";
+import { hasAdjecentRoads, hasAdjecentSettles, placeSettlement } from "@/lib/utils";
 import { Move } from "boardgame.io";
 import { INVALID_MOVE } from 'boardgame.io/core';
 
