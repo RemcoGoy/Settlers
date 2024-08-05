@@ -20,8 +20,29 @@ export const PlaceSettlement: Move<GameState> = ({ G, ctx }, coords: number[][])
 export const PlaceRoad: Move<GameState> = ({ G, ctx }, coords: number[][][]) => {
     const road = G.roads.find(r => JSON.stringify(r.coords) === JSON.stringify(coords));
     if (road && road.playerId === null) {
-        // TODO: Check if adjecent settlements are the current players
-        road.playerId = ctx.currentPlayer;
+        // Check for adjecent settle
+        let adjecentSettle = false;
+
+        const adjecentSettles = [];
+        for (const coord of coords) {
+            const settle = G.settleSpots.find(s => JSON.stringify(coord) === JSON.stringify(s.coords));
+            if (settle) {
+                adjecentSettles.push(settle);
+            }
+        }
+
+        if (adjecentSettles.some(s => s.playerId === ctx.currentPlayer)) {
+            adjecentSettle = true;
+        }
+
+        // Check for adjecent road
+        let adjecentRoad = false;
+
+        if (adjecentSettle || adjecentRoad) {
+            road.playerId = ctx.currentPlayer;
+        } else {
+            return INVALID_MOVE;
+        }
     } else {
         return INVALID_MOVE;
     }
