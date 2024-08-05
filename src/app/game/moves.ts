@@ -33,6 +33,29 @@ export const PlaceSettlement: Move<GameState> = ({ G, ctx }, coords: number[][])
     }
 };
 
+export const PlaceInitialRoad: Move<GameState> = ({ G, ctx }, coords: number[][][]) => {
+    const road = G.roads.find(r => JSON.stringify(r.coords) === JSON.stringify(coords));
+    if (road && road.playerId === null) {
+        const playerSettles = G.settleSpots.filter(s => s.playerId === ctx.currentPlayer);
+        let currentSettle: SettleSpot | null = null;
+
+        for (const settle of playerSettles) {
+            const settleRoads = G.roads.filter(r => (JSON.stringify(settle.coords) === JSON.stringify(r.coords[0]) || JSON.stringify(settle.coords) === JSON.stringify(r.coords[1])) && r.playerId !== null);
+            if (settleRoads.length === 0) {
+                currentSettle = settle;
+            }
+        }
+
+        if (currentSettle && (JSON.stringify(currentSettle.coords) === JSON.stringify(road.coords[0]) || JSON.stringify(currentSettle.coords) === JSON.stringify(road.coords[1]))) {
+            road.playerId = ctx.currentPlayer;
+        } else {
+            return INVALID_MOVE;
+        }
+    } else {
+        return INVALID_MOVE;
+    }
+}
+
 export const PlaceRoad: Move<GameState> = ({ G, ctx }, coords: number[][][]) => {
     const road = G.roads.find(r => JSON.stringify(r.coords) === JSON.stringify(coords));
     if (road && road.playerId === null) {

@@ -173,7 +173,11 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
             const y = (xy1.y + xy2.y) / 2;
 
             const handleClick = (e: any) => {
-                moves.PlaceRoad(road.coords);
+                if (ctx.phase === "initialSettle") {
+                    moves.PlaceInitialRoad(road.coords);
+                } else {
+                    moves.PlaceRoad(road.coords);
+                }
             }
 
             const roadData: { x: number, y: number, fill: string | null, handleClick: (e: any) => void } = { x, y, fill: null, handleClick };

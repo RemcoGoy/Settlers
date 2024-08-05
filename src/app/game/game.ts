@@ -1,5 +1,5 @@
 import { GameState } from "@/lib/types/game";
-import { PlaceInitialSettlement, PlaceRoad, PlaceRobber, PlaceSettlement, RollDice } from "./moves";
+import { PlaceInitialRoad, PlaceInitialSettlement, PlaceRoad, PlaceRobber, PlaceSettlement, RollDice } from "./moves";
 import { generateBoard, generateRoads, generateSettleSpots } from "@/lib/helpers/generate";
 
 export const SettlersGame = {
@@ -15,7 +15,7 @@ export const SettlersGame = {
         initialSettle: {
             moves: {
                 PlaceInitialSettlement,
-                PlaceRoad
+                PlaceInitialRoad
             },
             start: true,
             next: 'play',
