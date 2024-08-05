@@ -1,8 +1,8 @@
-import { GameState } from "@/types/game";
+import { GameState } from "@/lib/types/game";
 import React, { useEffect, useState } from "react";
 import FontFaceObserver from 'fontfaceobserver';
 import { Stage, Layer, RegularPolygon, Text, Star, Circle } from 'react-konva';
-import { boardLayout } from "@/app/game/game";
+import { boardLayout } from "@/lib/helpers/generate";
 
 
 
