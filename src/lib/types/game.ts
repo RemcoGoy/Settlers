@@ -28,7 +28,7 @@ export type Player = {
 
 export type RoadData = {
     coords: number[][][],
-    player: string | null
+    playerId: string | null
 }
 
 export interface GameState {

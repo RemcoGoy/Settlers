@@ -27,6 +27,8 @@ interface SettleSpotProps {
 interface RoadProps {
     x: number;
     y: number;
+    fill: string | null;
+    handleClick: (e: any) => void;
 }
 
 function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
@@ -54,8 +56,8 @@ function SettleSpot({ x, y, fill, handleClick }: SettleSpotProps) {
     return (<Circle onClick={handleClick} x={x} y={y} radius={15} fill={fill ?? "gray"} />)
 }
 
-function Road({ x, y }: RoadProps) {
-    return (<RegularPolygon x={x} y={y} radius={15} sides={4} fill='black' />)
+function Road({ x, y, fill, handleClick }: RoadProps) {
+    return (<RegularPolygon onClick={handleClick} x={x} y={y} radius={15} sides={4} fill={fill ?? "gray"} />)
 }
 
 export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves: any }) {
@@ -166,7 +168,17 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
             const x = (xy1.x + xy2.x) / 2;
             const y = (xy1.y + xy2.y) / 2;
 
-            roads.push({ x, y });
+            const handleClick = (e: any) => {
+                moves.PlaceRoad(road.coords);
+            }
+
+            const roadData: { x: number, y: number, fill: string | null, handleClick: (e: any) => void } = { x, y, fill: null, handleClick };
+
+            if (road.playerId) {
+                roadData['fill'] = G.players.find(p => p.id === road.playerId)?.color ?? null;
+            }
+
+            roads.push(roadData);
         }
 
         setRoads(roads);
