@@ -149,22 +149,80 @@ function generateSettleSpots() {
     return settleSpots;
 }
 
-function generateRoads(settleSpots: SettleSpot[]) {
+function generateRoads() {
     const roads: RoadData[] = [];
+
+    for (let i = 0; i < boardLayout.length; i++) {
+        const hex = boardLayout[i];
+
+        if (hex.sea !== true) {
+            const spot_N = N_Settle(hex);
+            const spot_NE = NE_Settle(hex);
+            const spot_SE = SE_Settle(hex);
+            const spot_S = S_Settle(hex);
+            const spot_SW = SW_Settle(hex);
+            const spot_NW = NW_Settle(hex);
+
+            const road_E = {
+                coords: [spot_NE, spot_SE],
+                player: null
+            }
+            if (roads.findIndex(x => JSON.stringify(x.coords) === JSON.stringify(road_E.coords)) === -1) {
+                roads.push(road_E);
+            }
+
+            const road_SE = {
+                coords: [spot_SE, spot_S],
+                player: null
+            }
+            if (roads.findIndex(x => JSON.stringify(x.coords) === JSON.stringify(road_SE.coords)) === -1) {
+                roads.push(road_SE);
+            }
+
+            const road_SW = {
+                coords: [spot_SW, spot_S],
+                player: null
+            }
+            if (roads.findIndex(x => JSON.stringify(x.coords) === JSON.stringify(road_SW.coords)) === -1) {
+                roads.push(road_SW);
+            }
+
+            const road_W = {
+                coords: [spot_NW, spot_SW],
+                player: null
+            }
+            if (roads.findIndex(x => JSON.stringify(x.coords) === JSON.stringify(road_W.coords)) === -1) {
+                roads.push(road_W);
+            }
+
+            const road_NW = {
+                coords: [spot_N, spot_NW],
+                player: null
+            }
+            if (roads.findIndex(x => JSON.stringify(x.coords) === JSON.stringify(road_NW.coords)) === -1) {
+                roads.push(road_NW);
+            }
+
+            const road_NE = {
+                coords: [spot_N, spot_NE],
+                player: null
+            }
+            if (roads.findIndex(x => JSON.stringify(x.coords) === JSON.stringify(road_NE.coords)) === -1) {
+                roads.push(road_NE);
+            }
+        }
+    }
 
     return roads;
 }
-
-const settleSpots = generateSettleSpots();
-const tiles = generateBoard();
 
 export const SettlersGame = {
     setup: () => ({
         players: [{ id: '0', color: 'blue', points: 0 }, { id: '1', color: 'red', points: 0 }],
         currentDice: [0, 0],
-        settleSpots,
-        tiles,
-        roads: generateRoads(settleSpots)
+        tiles: generateBoard(),
+        settleSpots: generateSettleSpots(),
+        roads: generateRoads()
     }),
 
     phases: {
