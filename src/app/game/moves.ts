@@ -9,6 +9,7 @@ export const PlaceSettlement: Move<GameState> = ({ G, ctx }, coords: number[][])
 
     if (settleSpot && settleSpot.playerId === null) {
         // Check adjecent settles
+        let hasAdjecentSettles = false;
 
         const adjecentSettles = [];
 
@@ -51,13 +52,25 @@ export const PlaceSettlement: Move<GameState> = ({ G, ctx }, coords: number[][])
         }
 
         if (adjecentSettles.some(s => s.playerId !== null)) {
-            return INVALID_MOVE;
+            hasAdjecentSettles = true;
         }
 
-        settleSpot.playerId = playerID;
-        const player = G.players.find(p => p.id === playerID);
-        if (player) {
-            player.points++;
+        // Check adjecent roads
+        let hasAdjecentRoads = false;
+
+        const adjecentRoads = G.roads.filter(r => JSON.stringify(settleSpot.coords) === JSON.stringify(r.coords[0]) || JSON.stringify(settleSpot.coords) === JSON.stringify(r.coords[1]));
+        if (adjecentRoads.some(r => r.playerId === playerID)) {
+            hasAdjecentRoads = true;
+        }
+
+        if (!hasAdjecentSettles && hasAdjecentRoads) {
+            settleSpot.playerId = playerID;
+            const player = G.players.find(p => p.id === playerID);
+            if (player) {
+                player.points++;
+            }
+        } else {
+            return INVALID_MOVE;
         }
     } else {
         return INVALID_MOVE

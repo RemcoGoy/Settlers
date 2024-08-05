@@ -47,7 +47,7 @@ function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
             />
             <Text x={x - coords.length * 5} y={y - 45} text={coords} fontFamily="'Ubuntu Mono'" fontSize={18} />
             {text && <Text x={x - 11 * text.length} y={y - 20} text={text} fontFamily="'Ubuntu Mono'" fontSize={42} align="center" verticalAlign="middle" />}
-            {robber && <Star fill={'black'} x={x - 40} y={y} innerRadius={8} outerRadius={12} numPoints={5} />}
+            {robber && <Star fill={'black'} x={x - 35} y={y} innerRadius={8} outerRadius={12} numPoints={5} />}
         </>
     )
 }
