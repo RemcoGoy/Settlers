@@ -1,6 +1,7 @@
-import { GameState } from "@/lib/types/game";
+import { GameState, RoadData } from "@/lib/types/game";
 import { Move } from "boardgame.io";
 import { INVALID_MOVE } from 'boardgame.io/core';
+import { current } from 'immer';
 
 export const PlaceSettlement: Move<GameState> = ({ G, ctx }, coords: number[][]) => {
     const settleSpot = G.settleSpots.find(spot => JSON.stringify(spot.coords) === JSON.stringify(coords));
@@ -37,6 +38,19 @@ export const PlaceRoad: Move<GameState> = ({ G, ctx }, coords: number[][][]) => 
 
         // Check for adjecent road
         let adjecentRoad = false;
+
+        const adjecentRoads: RoadData[] = [];
+        for (const coord of coords) {
+            const r = G.roads.filter(rx =>
+                (JSON.stringify(rx.coords[0]) === JSON.stringify(coord) || JSON.stringify(rx.coords[1]) === JSON.stringify(coord))
+                && JSON.stringify(rx.coords) !== JSON.stringify(road.coords)
+            );
+
+
+            if (!adjecentRoad && r.some(r => r.playerId === ctx.currentPlayer)) {
+                adjecentRoad = true;
+            }
+        }
 
         if (adjecentSettle || adjecentRoad) {
             road.playerId = ctx.currentPlayer;
