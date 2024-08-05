@@ -70,3 +70,11 @@ export function hasAdjecentSettles(G: GameState, settleSpot: SettleSpot) {
 
   return hasAdjecentSettles;
 }
+
+export function placeSettlement(G: GameState, settleSpot: SettleSpot, currentPlayer: string) {
+  settleSpot.playerId = currentPlayer;
+  const player = G.players.find(p => p.id === currentPlayer);
+  if (player) {
+    player.points++;
+  }
+}

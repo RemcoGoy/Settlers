@@ -1,19 +1,30 @@
 import { GameState, SettleSpot } from "@/lib/types/game";
-import { hasAdjecentRoads, hasAdjecentSettles, isTopSettle } from "@/lib/utils";
+import { hasAdjecentRoads, hasAdjecentSettles, isTopSettle, placeSettlement } from "@/lib/utils";
 import { Move } from "boardgame.io";
 import { INVALID_MOVE } from 'boardgame.io/core';
 
-export const PlaceSettlement: Move<GameState> = ({ G, ctx }, coords: number[][]) => {
+export const PlaceInitialSettlement: Move<GameState> = ({ G, ctx }, coords: number[][]) => {
     const settleSpot = G.settleSpots.find(spot => JSON.stringify(spot.coords) === JSON.stringify(coords));
-    const playerID = ctx.currentPlayer;
+    const currentPlayer = ctx.currentPlayer;
 
     if (settleSpot && settleSpot.playerId === null) {
-        if (!hasAdjecentSettles(G, settleSpot) && hasAdjecentRoads(G, settleSpot, playerID)) {
-            settleSpot.playerId = playerID;
-            const player = G.players.find(p => p.id === playerID);
-            if (player) {
-                player.points++;
-            }
+        if (!hasAdjecentSettles(G, settleSpot)) {
+            placeSettlement(G, settleSpot, currentPlayer);
+        } else {
+            return INVALID_MOVE;
+        }
+    } else {
+        return INVALID_MOVE
+    }
+};
+
+export const PlaceSettlement: Move<GameState> = ({ G, ctx }, coords: number[][]) => {
+    const settleSpot = G.settleSpots.find(spot => JSON.stringify(spot.coords) === JSON.stringify(coords));
+    const currentPlayer = ctx.currentPlayer;
+
+    if (settleSpot && settleSpot.playerId === null) {
+        if (!hasAdjecentSettles(G, settleSpot) && hasAdjecentRoads(G, settleSpot, currentPlayer)) {
+            placeSettlement(G, settleSpot, currentPlayer);
         } else {
             return INVALID_MOVE;
         }
