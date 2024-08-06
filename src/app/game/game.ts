@@ -1,6 +1,8 @@
+import { TurnOrder } from 'boardgame.io/core';
 import { GameState } from "@/lib/types/game";
 import { PlaceInitialRoad, PlaceInitialSettlement, PlaceRoad, PlaceRobber, PlaceSettlement, RollDice } from "./moves";
 import { generateBoard, generateRoads, generateSettleSpots } from "@/lib/helpers/generate";
+
 
 export const SettlersGame = {
     setup: () => ({
@@ -17,9 +19,26 @@ export const SettlersGame = {
                 PlaceInitialSettlement,
                 PlaceInitialRoad
             },
+
+            turn: {
+                order: TurnOrder.CUSTOM(['0', '1', '1', '0'])
+            },
+
             start: true,
             next: 'play',
-            endIf: ({ G }: { G: GameState }) => G.players.every(p => p.points === 2)
+            endIf: ({ G }: { G: GameState }) => {
+                let allPlayers2Roads = true;
+
+                for (const p of G.players) {
+                    const playerRoads = G.roads.filter(r => r.playerId === p.id);
+
+                    if (playerRoads.length !== 2) {
+                        allPlayers2Roads = false
+                    }
+                }
+
+                return G.players.every(p => p.points === 2) && allPlayers2Roads
+            },
         },
 
         play: {
