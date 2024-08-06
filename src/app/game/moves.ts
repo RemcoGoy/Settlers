@@ -86,9 +86,6 @@ export const PlaceRobber: Move<GameState> = ({ G, ctx }, tileId: number) => {
     }
 };
 
-export const RollDice: Move<GameState> = ({ G, ctx }) => {
-    const d1 = Math.floor(Math.random() * 6) + 1;
-    const d2 = Math.floor(Math.random() * 6) + 1;
-
-    G.currentDice = [d1, d2];
+export const RollDice: Move<GameState> = ({ G, random }) => {
+    G.currentDice = random.D6(2);
 };

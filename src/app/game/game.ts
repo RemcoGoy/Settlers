@@ -1,12 +1,11 @@
 import { TurnOrder } from 'boardgame.io/core';
 import { GameState } from "@/lib/types/game";
 import { PlaceInitialRoad, PlaceInitialSettlement, PlaceRoad, PlaceRobber, PlaceSettlement, RollDice } from "./moves";
-import { generateBoard, generateRoads, generateSettleSpots } from "@/lib/helpers/generate";
-
+import { generateBoard, generatePlayers, generateRoads, generateSettleSpots } from "@/lib/helpers/generate";
 
 export const SettlersGame = {
     setup: () => ({
-        players: [{ id: '0', color: 'blue', points: 0 }, { id: '1', color: 'red', points: 0 }],
+        players: generatePlayers(4),
         currentDice: [0, 0],
         tiles: generateBoard(),
         settleSpots: generateSettleSpots(),
@@ -21,7 +20,7 @@ export const SettlersGame = {
             },
 
             turn: {
-                order: TurnOrder.CUSTOM(['0', '1', '1', '0'])
+                order: TurnOrder.CUSTOM(['0', '1', '1', '0']) // TODO: Make dynamic
             },
 
             start: true,

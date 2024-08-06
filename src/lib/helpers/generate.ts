@@ -1,5 +1,21 @@
-import { Resource, RoadData, SettleSpot, Tile } from "@/lib/types/game";
+import { Player, Resource, RoadData, SettleSpot, Tile } from "@/lib/types/game";
 import { N_Settle, NE_Settle, NW_Settle, S_Settle, SE_Settle, SW_Settle } from "./settle";
+
+const playerColors = ['blue', 'green', 'red', 'yellow'];
+
+export function generatePlayers(numOfPlayers: number = 4) {
+    const players: Player[] = [];
+
+    for (let i = 0; i < numOfPlayers; i++) {
+        players.push({
+            id: i.toString(),
+            color: playerColors[i],
+            points: 0
+        })
+    }
+
+    return players;
+}
 
 export const boardLayout = [
     { q: -1.5, r: -3, sea: true }, { q: -0.5, r: -3, sea: true }, { q: 0.5, r: -3, sea: true }, { q: 1.5, r: -3, sea: true },
