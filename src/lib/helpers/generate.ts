@@ -3,6 +3,11 @@ import { N_Settle, NE_Settle, NW_Settle, S_Settle, SE_Settle, SW_Settle } from "
 
 const playerColors = ['blue', 'green', 'red', 'yellow'];
 
+export function createSymmetricArray(numPlayers: number): string[] {
+    const halfArray = Array.from({ length: numPlayers }, (_, index) => index.toString());
+    return [...halfArray, ...halfArray.reverse()];
+}
+
 export function generatePlayers(numOfPlayers: number = 4) {
     const players: Player[] = [];
 
