@@ -1,9 +1,9 @@
 import { GameState } from "@/lib/types/game";
 import React, { useEffect, useState } from "react";
 import FontFaceObserver from 'fontfaceobserver';
-import { Stage, Layer, RegularPolygon, Text, Star, Circle, Shape, Rect, Path } from 'react-konva';
+import { Stage, Layer, RegularPolygon, Text, Star, Circle, Shape, Rect, Path, Image } from 'react-konva';
 import { boardLayout } from "@/lib/helpers/generate";
-
+import useImage from 'use-image';
 
 
 interface HexagonProps {
@@ -24,6 +24,8 @@ interface SettleSpotProps {
     handleClick: (e: any) => void;
     hasPlayer: boolean;
 }
+
+interface RoadProps extends SettleSpotProps { }
 
 function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
     const coords = q + "," + r;
@@ -47,22 +49,20 @@ function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
 }
 
 function SettleSpot({ x, y, fill, handleClick, hasPlayer }: SettleSpotProps) {
+    const [image] = useImage(`./settle-${fill}.svg`);
+
     return (<>
         {
             hasPlayer ?
                 <>
-                    {/* Main House Body */}
-                    <Rect x={x - 20} y={y - 5} width={40} height={25} fill={fill ?? "gray"} />
-
-                    {/* Roof */}
-                    <Path data={`M ${x - 20} ${y - 5} L ${x} ${y - 20} L ${x + 20} ${y - 5} Z`} fill={fill ?? 'gray'} />
+                    <Image x={x - 20} y={y - 20} width={40} height={40} image={image} />
                 </> :
                 <Circle onClick={handleClick} x={x} y={y} radius={20} fill={fill ?? "gray"} opacity={0.5} />
         }
     </>)
 }
 
-function Road({ x, y, fill, handleClick, hasPlayer }: SettleSpotProps) {
+function Road({ x, y, fill, handleClick, hasPlayer }: RoadProps) {
     return (<>
         <RegularPolygon onClick={handleClick} x={x} y={y} radius={20} sides={4} fill={fill ?? "gray"} opacity={0.5} />
     </>)
