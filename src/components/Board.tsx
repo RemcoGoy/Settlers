@@ -1,7 +1,7 @@
 import { GameState } from "@/lib/types/game";
 import React, { useEffect, useState } from "react";
 import FontFaceObserver from 'fontfaceobserver';
-import { Stage, Layer, RegularPolygon, Text, Star, Circle } from 'react-konva';
+import { Stage, Layer, RegularPolygon, Text, Star, Circle, Shape, Rect, Path } from 'react-konva';
 import { boardLayout } from "@/lib/helpers/generate";
 
 
@@ -22,13 +22,7 @@ interface SettleSpotProps {
     y: number;
     fill: string | null;
     handleClick: (e: any) => void;
-}
-
-interface RoadProps {
-    x: number;
-    y: number;
-    fill: string | null;
-    handleClick: (e: any) => void;
+    hasPlayer: boolean;
 }
 
 function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
@@ -52,12 +46,26 @@ function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
     )
 }
 
-function SettleSpot({ x, y, fill, handleClick }: SettleSpotProps) {
-    return (<Circle onClick={handleClick} x={x} y={y} radius={15} fill={fill ?? "gray"} />)
+function SettleSpot({ x, y, fill, handleClick, hasPlayer }: SettleSpotProps) {
+    return (<>
+        {
+            hasPlayer ?
+                <>
+                    {/* Main House Body */}
+                    <Rect x={x - 20} y={y - 5} width={40} height={25} fill={fill ?? "gray"} />
+
+                    {/* Roof */}
+                    <Path data={`M ${x - 20} ${y - 5} L ${x} ${y - 20} L ${x + 20} ${y - 5} Z`} fill={fill ?? 'gray'} />
+                </> :
+                <Circle onClick={handleClick} x={x} y={y} radius={20} fill={fill ?? "gray"} opacity={0.5} />
+        }
+    </>)
 }
 
-function Road({ x, y, fill, handleClick }: RoadProps) {
-    return (<RegularPolygon onClick={handleClick} x={x} y={y} radius={15} sides={4} fill={fill ?? "gray"} />)
+function Road({ x, y, fill, handleClick, hasPlayer }: SettleSpotProps) {
+    return (<>
+        <RegularPolygon onClick={handleClick} x={x} y={y} radius={20} sides={4} fill={fill ?? "gray"} opacity={0.5} />
+    </>)
 }
 
 export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves: any }) {
@@ -143,7 +151,7 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
                 }
             }
 
-            const newSettle: SettleSpotProps = { x: -1, y: -1, fill: null, handleClick }
+            const newSettle: SettleSpotProps = { x: -1, y: -1, fill: null, handleClick, hasPlayer: settleSpot.playerId !== null }
 
             const { x, y } = getSettleXY(coords);
 
@@ -180,7 +188,7 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
                 }
             }
 
-            const roadData: { x: number, y: number, fill: string | null, handleClick: (e: any) => void } = { x, y, fill: null, handleClick };
+            const roadData: SettleSpotProps = { x, y, fill: null, handleClick, hasPlayer: road.playerId !== null };
 
             if (road.playerId) {
                 roadData['fill'] = G.players.find(p => p.id === road.playerId)?.color ?? null;
