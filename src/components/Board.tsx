@@ -59,7 +59,7 @@ function SettleSpot({ x, y, fill, handleClick, hasPlayer }: SettleSpotProps) {
                 <>
                     <Image x={x - 20} y={y - 20} width={40} height={40} image={image} />
                 </> :
-                <Circle onClick={handleClick} x={x} y={y} radius={20} fill={fill ?? "gray"} opacity={0.5} />
+                <Circle onClick={handleClick} x={x} y={y} radius={20} fill={fill ?? "gray"} opacity={0} />
         }
     </>)
 }
@@ -72,7 +72,7 @@ function Road({ x, y, rotation, fill, handleClick, hasPlayer }: RoadProps) {
         {
             hasPlayer ?
                 <Rect rotation={rotation} x={x} y={y} offsetX={width / 2} offsetY={height / 2} width={width} height={height} fill={fill ?? "gray"} /> :
-                <Rect rotation={rotation} onClick={handleClick} x={x} y={y} offsetX={width} offsetY={height} width={width * 2} height={height * 2} fill={fill ?? "gray"} opacity={0.5} />
+                <Rect rotation={rotation} onClick={handleClick} x={x} y={y} offsetX={width} offsetY={height} width={width * 2} height={height * 2} fill={fill ?? "gray"} opacity={0} />
         }
     </>)
 }
