@@ -25,7 +25,9 @@ interface SettleSpotProps {
     hasPlayer: boolean;
 }
 
-interface RoadProps extends SettleSpotProps { }
+interface RoadProps extends SettleSpotProps {
+    rotation: number;
+}
 
 function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
     const coords = q + "," + r;
@@ -62,9 +64,16 @@ function SettleSpot({ x, y, fill, handleClick, hasPlayer }: SettleSpotProps) {
     </>)
 }
 
-function Road({ x, y, fill, handleClick, hasPlayer }: RoadProps) {
+function Road({ x, y, rotation, fill, handleClick, hasPlayer }: RoadProps) {
+    const width = 30;
+    const height = 10;
+
     return (<>
-        <RegularPolygon onClick={handleClick} x={x} y={y} radius={20} sides={4} fill={fill ?? "gray"} opacity={0.5} />
+        {
+            hasPlayer ?
+                <Rect rotation={rotation} x={x} y={y} offsetX={width / 2} offsetY={height / 2} width={width} height={height} fill={fill ?? "gray"} /> :
+                <Rect rotation={rotation} onClick={handleClick} x={x} y={y} offsetX={width} offsetY={height} width={width * 2} height={height * 2} fill={fill ?? "gray"} opacity={0.5} />
+        }
     </>)
 }
 
@@ -188,7 +197,9 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
                 }
             }
 
-            const roadData: SettleSpotProps = { x, y, fill: null, handleClick, hasPlayer: road.playerId !== null };
+            const angle = Math.atan2(xy2.y - xy1.y, xy2.x - xy1.x) * 180 / Math.PI;
+
+            const roadData: RoadProps = { x, y, rotation: angle, fill: null, handleClick, hasPlayer: road.playerId !== null };
 
             if (road.playerId) {
                 roadData['fill'] = G.players.find(p => p.id === road.playerId)?.color ?? null;
