@@ -61,10 +61,10 @@ export function generateBoard() {
         ['wood', 1],
         ['brick', 1],
         ['wool', 1],
-        ['generic', 2]
+        ['generic', 4]
     ])
 
-    const portOffset = Math.round(Math.random() * 2);
+    const portOffset = Math.round(Math.random());
     let seaCounter = 0;
 
     const map: Tile[] = [];
@@ -116,7 +116,7 @@ export function generateBoard() {
                 coords: Object.values(boardLayout[i])
             } as Tile
 
-            if (seaCounter % 3 === portOffset) {
+            if (seaCounter % 2 === 0) {
                 const port_items = Array.from(portOptions);
                 const port_selection = port_items[Math.floor(Math.random() * port_items.length)];
 
