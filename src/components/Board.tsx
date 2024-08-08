@@ -15,6 +15,7 @@ interface HexagonProps {
     fill?: string;
     text?: string;
     robber?: boolean;
+    port?: any
 }
 
 interface SettleSpotProps {
@@ -29,7 +30,7 @@ interface RoadProps extends SettleSpotProps {
     rotation: number;
 }
 
-function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
+function Hexagon({ x, y, q, r, radius, fill, text, robber, port }: HexagonProps) {
     const coords = q + "," + r;
 
     return (
@@ -46,6 +47,7 @@ function Hexagon({ x, y, q, r, radius, fill, text, robber }: HexagonProps) {
             <Text x={x - coords.length * 5} y={y - 45} text={coords} fontFamily="'Ubuntu Mono'" fontSize={18} />
             {text && <Text x={x - 11 * text.length} y={y - 20} text={text} fontFamily="'Ubuntu Mono'" fontSize={42} align="center" verticalAlign="middle" />}
             {robber && <Star fill={'black'} x={x - 35} y={y} innerRadius={8} outerRadius={12} numPoints={5} />}
+            {port && <Text x={x - 20} y={y} text={port.resource} />}
         </>
     )
 }
@@ -137,7 +139,7 @@ export function SettlersBoard({ ctx, G, moves }: { ctx: any, G: GameState, moves
             else if (resource === 'ore') fill = '#8da1b9';
             else if (resource === 'sea') fill = '#c9ebed';
 
-            const newHex = { x, y, q: coords.q, r: coords.r, radius: RADIUS, fill, text: tile.number?.toString(), robber: tile.hasRobber }
+            const newHex = { x, y, q: coords.q, r: coords.r, radius: RADIUS, fill, text: tile.number?.toString(), robber: tile.hasRobber, port: tile.port }
 
             newBoard.push(newHex);
         }

@@ -55,6 +55,18 @@ export function generateBoard() {
         [12, 1]
     ])
 
+    let portOptions = new Map([
+        ['wheat', 1],
+        ['ore', 1],
+        ['wood', 1],
+        ['brick', 1],
+        ['wool', 1],
+        ['generic', 2]
+    ])
+
+    const portOffset = Math.round(Math.random() * 2);
+    let seaCounter = 0;
+
     const map: Tile[] = [];
 
     for (let i = 0; i < boardLayout.length; i++) {
@@ -90,19 +102,42 @@ export function generateBoard() {
                     type: resource as Resource,
                     number: value,
                     hasRobber: false,
-                    coords: Object.values(boardLayout[i])
-                }
+                    coords: Object.values(boardLayout[i]),
+                } as Tile
             } else {
                 tile_data = { type: 'desert', hasRobber: true, coords: Object.values(boardLayout[i]) } as Tile;
             }
 
             map.push(tile_data ?? {} as Tile);
         } else {
-            map.push({
+            const tile_data: Tile = {
                 type: 'sea' as Resource,
                 hasRobber: false,
                 coords: Object.values(boardLayout[i])
-            } as Tile)
+            } as Tile
+
+            if (seaCounter % 3 === portOffset) {
+                const port_items = Array.from(portOptions);
+                const port_selection = port_items[Math.floor(Math.random() * port_items.length)];
+
+                const port_type = port_selection[0];
+                const port_remaining = port_selection[1];
+
+                if (port_remaining - 1 > 0) {
+                    portOptions.set(port_type, port_remaining - 1);
+                } else {
+                    portOptions.delete(port_type);
+                }
+
+                tile_data.port = {
+                    resource: port_type as Resource | "generic",
+                    ratio: port_type === 'generic' ? 3 : 2
+                }
+            }
+
+            map.push(tile_data)
+
+            seaCounter++;
         }
     }
 

@@ -8,11 +8,17 @@ export enum Resource {
     sea = "sea"
 }
 
+export type Port = {
+    resource: Resource | "generic",
+    ratio: number
+}
+
 export type Tile = {
     type: Resource,
     number: number,
     hasRobber: boolean,
-    coords: number[]
+    coords: number[],
+    port: Port | null
 }
 
 export type SettleSpot = {
